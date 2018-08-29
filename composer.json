@@ -1,0 +1,23 @@
+{
+    "name": "fenxweb/fenx",
+    "type": "library",
+    "description": "A micro PHP MVC Framework",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Olivier M. Mukadi",
+            "email": "mbo2olivier@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5",
+        "pimple/pimple": "^3.2",
+        "symfony/http-foundation": "^2.8",
+        "doctrine/annotations": "^1.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Fenxweb\\Fenx\\": "src"
+        }
+    }
+}
