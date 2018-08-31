@@ -41,7 +41,7 @@ class Application extends Container
 
     public function __construct($projectDir) {
         session_start();
-        AnnotationRegistry::registerLoader('class_exists');
+        AnnotationRegistry::registerFile(__DIR__.'/../mapping/Annotations.php');
         $this->before = [];
         $this->after = [];
         $this->modules = [];
