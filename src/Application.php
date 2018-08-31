@@ -38,9 +38,15 @@ class Application extends Container
      * @var array
      */
     protected $modules;
+    /**
+     * @var bool
+     */
+    protected $debug;
 
-    public function __construct($projectDir) {
+    public function __construct($projectDir, $debug = false) {
         session_start();
+        $this->debug = $debug;
+        $this['app.mode'] = $this->debug ? 'dev': 'prod';
         AnnotationRegistry::registerFile(__DIR__.'/../mapping/Annotations.php');
         $this->before = [];
         $this->after = [];

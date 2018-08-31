@@ -1,5 +1,5 @@
 {
-    "name": "fenxweb/fenx",
+    "name": "mukadi/fenx-core",
     "type": "library",
     "description": "A micro PHP MVC Framework",
     "license": "MIT",
@@ -13,8 +13,10 @@
         "php": ">=5.5",
         "pimple/pimple": "^3.2",
         "symfony/http-foundation": "^2.8",
-        "doctrine/annotations": "^1.2"
+        "doctrine/annotations": "^1.2",
+        "doctrine/orm": "^2.4.8"
     },
+    "bin": ["bin/console"],
     "autoload": {
         "psr-4": {
             "Fenxweb\\Fenx\\": "src"
