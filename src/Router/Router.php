@@ -31,6 +31,8 @@ class Router extends Middleware{
             }
             return new RouteManager($routes->build());
         };
+        // Pour générer des routes depuis la vue (e.g: Helper::path('my_route',$args))
+        $app->registerHelper('path','router','path');
     }
 
     public function before(Request $request){

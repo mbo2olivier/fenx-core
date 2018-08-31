@@ -10,6 +10,7 @@ namespace Fenxweb\Fenx\Templating;
 
 use Fenxweb\Fenx\Module;
 use Fenxweb\Fenx\Application;
+use Fenxweb\Fenx\Templating\Helper;
 /**
  * class Templating.
  * 
@@ -18,6 +19,9 @@ use Fenxweb\Fenx\Application;
 class Templating extends Module {
 
     public static function initialize(Application $app) {
+        class_alias("Fenxweb\Fenx\Templating\Helper","Helper");
+        Helper::setApplication($app);
+        
         $app['templating'] = function ($a) {
             $templateDir = $a['app.project_dir']."/view";
             if( !is_dir($templateDir) ){

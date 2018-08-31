@@ -14,6 +14,8 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use Fenxweb\Fenx\Annotation\Inject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Fenxweb\Fenx\Templating\Helper;
+
 /**
  * class Application.
  * 
@@ -155,6 +157,10 @@ class Application extends Container
         // on invoke la methode du controleur
         $controller = new $class();
         return \call_user_func_array([$controller,$action], $args);
+    }
+
+    public function registerHelper($name, $service, $method) {
+        Helper::registerHelper($name, $service, $method);
     }
 
 }
