@@ -37,13 +37,18 @@ class Application extends Container
      */
     protected $modules;
 
-    public function __construct($configDir) {
+    public function __construct($projectDir) {
         session_start();
         AnnotationRegistry::registerLoader('class_exists');
         $this->before = [];
         $this->after = [];
         $this->modules = [];
+        $this["app.project_dir"] = $projectDir;
+        $configDir = $projectDir."/config";
         $this["app.config_dir"] = $configDir;
+        if( !is_dir($configDir) ){
+            mkdir($configDir, 0700);
+        }
     }
 
    /**
@@ -134,15 +139,19 @@ class Application extends Container
             $ij[$a->var] = $a->service;
         }
         // injection des arguments, il s'agit des attributs de la requêtes, la requête elle même ou les services 
-        $args = array_map(function($p) use ($ij,$request){
+        $args = [];
+        foreach($method->getParameters() as $p) {
             if($p->getClass() && $p->getClass()->name === Request::class) {
-                return $request;
+                $args[]= $request;
+                continue;
             }else if($request->attributes->has($p->name)) {
-                return $request->attributes->get($p->name);
+                $args[]= $request->attributes->get($p->name);
+                continue;
             }else {
-                return isset($ij[$p->name])? $this[$ij[$p->name]]:null;
+                $args[]= isset($ij[$p->name])? $this[$ij[$p->name]]:null;
+                continue;
             }
-        }, $method->getParameters());
+        }
         // on invoke la methode du controleur
         $controller = new $class();
         return \call_user_func_array([$controller,$action], $args);
