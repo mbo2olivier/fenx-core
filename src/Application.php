@@ -15,6 +15,9 @@ use Fenxweb\Fenx\Annotation\Inject;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Fenxweb\Fenx\Templating\Helper;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
 
 /**
  * class Application.
@@ -44,9 +47,9 @@ class Application extends Container
     protected $debug;
 
     public function __construct($projectDir, $debug = false) {
-        session_start();
         $this->debug = $debug;
         $this['app.mode'] = $this->debug ? 'dev': 'prod';
+        $this->setupSession();
         AnnotationRegistry::registerFile(__DIR__.'/../mapping/Annotations.php');
         $this->before = [];
         $this->after = [];
@@ -167,6 +170,15 @@ class Application extends Container
 
     public function registerHelper($name, $service, $method) {
         Helper::registerHelper($name, $service, $method);
+    }
+
+    public function setupSession() {
+        $this['session'] = function() {
+            $sessionStorage = new NativeSessionStorage(array(), new NativeFileSessionHandler());
+            $session = new Session($sessionStorage);
+            $session->start();
+            return $session;
+        };
     }
 
 }
