@@ -6,27 +6,37 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Fenxweb\Fenx;
+namespace Fenxweb\Fenx\PDF;
 
+use Fenxweb\Fenx\Module;
+use Fenxweb\Fenx\Application;
+use Spipu\Html2Pdf\Html2Pdf;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+
 /**
- * class Controller.
+ * class Printer.
  * 
  * @author Olivier M. Mukadi <olivier.m@fenxweb.com>
  */
-class Controller
-{
+class Printer {
+    /**
+     * @var Html2Pdf
+     */
+    private $pdf;
 
-    public function output($text,$code = Response::HTTP_OK) {
-        \ob_start();
-        echo $text;
-        $text = \ob_get_clean();
-        return new Response($text, $code);
+    public function __construct () {
+        $this->pdf = new Html2Pdf('P', 'A4', 'fr');
     }
 
-    public function outputFile($file,$name = "file.pdf") {
-        $content = file_get_contents($file);
+    public function configure($orientation,$format, $lang, $unicode, $margin){
+        $this->pdf = new Html2Pdf($orientation,$format, $lang, $unicode, $margin);
+        $this->pdf->pdf->SetDisplayMode('fullpage');
+    }
+
+    public function output($content,$name){
+        $this->pdf->writeHTML($content);
+        $content =  $this->pdf->pdf->Output($name);
         $response = new Response($content);
 
         $disposition = $response->headers->makeDisposition(
