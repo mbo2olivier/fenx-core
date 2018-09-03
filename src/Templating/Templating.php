@@ -22,8 +22,10 @@ class Templating extends Module {
         class_alias("Fenxweb\Fenx\Templating\Helper","Helper");
         Helper::setApplication($app);
         
-        $app['templating'] = function ($a) {
-            $templateDir = $a['app.project_dir']."/view";
+        $templateDir = $app['app.project_dir']."/view";
+        $app['app.template_dir'] = $templateDir;
+        
+        $app['templating'] = function ($a) use ($templateDir){
             if( !is_dir($templateDir) ){
                 mkdir($templateDir, 0700);
             }

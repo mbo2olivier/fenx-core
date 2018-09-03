@@ -60,6 +60,11 @@ class Application extends Container
         if( !is_dir($configDir) ){
             mkdir($configDir, 0700);
         }
+        $cacheDir = $projectDir."/var/cache";
+        $this["app.cache_dir"] = $cacheDir;
+        if( !is_dir($cacheDir) ){
+            mkdir($cacheDir, 0700,true);
+        }
     }
 
    /**
