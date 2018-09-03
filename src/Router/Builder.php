@@ -44,7 +44,7 @@ class Builder {
     public function build() {
         $b = [];
         foreach($this->routes as $r) {
-            $b = array_merge($r->getRouteData(),$b);
+            $b[$r->getName()] = $r->getRouteData();
         }
         return $b;
     }

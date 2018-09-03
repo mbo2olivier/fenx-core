@@ -42,7 +42,7 @@ class RouteManager
         $response = false;
         $data = [];
         foreach($this->routes as $name => $route) {
-            if(\preg_match("#".$route['regex']."#",$path,$data)) {
+            if(\preg_match("#^".$route['regex']."$#",$path,$data)) {
                 $response = [];
                 $response['name'] = $name;
                 $response['controller'] = $route['controller'];

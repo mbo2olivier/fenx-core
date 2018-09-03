@@ -55,6 +55,10 @@ class Route {
     }
 
     public function getRouteData () {
-        return [$this->name => $this->data];
+        return $this->data;
+    }
+
+    public function getName() {
+        return $this->name;
     }
 }
