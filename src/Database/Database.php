@@ -30,7 +30,7 @@ class Database extends Module {
         if(!is_file($configFile)) {
             throw new \RuntimeException(\sprintf("cannot find the config file at: %s",$configFile));
         }
-        require $configFile;
+        $params = require $configFile;
         $config = Setup::createAnnotationMetadataConfiguration([$entityDir], $isDevMode, null, null, false);
         $em = EntityManager::create($params, $config);
 
