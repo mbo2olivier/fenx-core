@@ -31,5 +31,7 @@ class Templating extends Module {
             }
             return new Engine($templateDir);
         };
+
+        $app->registerHelper('asset','templating','asset');
     }
 }

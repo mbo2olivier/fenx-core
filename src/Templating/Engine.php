@@ -29,4 +29,26 @@ class Engine {
         $text = \ob_get_clean();
         return new Response($text);
     }
+
+    public function asset($path) {
+        $base = $_SERVER['REQUEST_URI'];
+        if(preg_match('#index.php#', $base)){
+            $split=preg_split("/index.php/",$base);
+            $base = $split[0];
+        }else if($_SERVER['REQUEST_URI'] === $_SERVER['PATH_INFO']){
+            $base = "/";
+        }else {
+            if(strpos($base,$_SERVER['PATH_INFO']) !== false) {
+                $base = substr($base,0,-strlen($_SERVER['PATH_INFO']))."/";
+            }
+        }
+        $req = sprintf(
+            "%s://%s%s",
+            isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
+            $_SERVER['HTTP_HOST'],
+            $base
+        );
+
+        return $req.$path;
+    }
 }
