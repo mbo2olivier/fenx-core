@@ -20,6 +20,8 @@ use Symfony\Component\HttpFoundation\Response;
 class Router extends Middleware{
 
     public static function initialize(Application $app){
+        self::setupProjtectRoot($app);
+
         $app['router'] = function ($a) {
             $routes = new Builder();
             $dir = $a["app.config_dir"]."/routes";
@@ -29,10 +31,25 @@ class Router extends Middleware{
                     require_once $f;
                 }
             }
-            return new RouteManager($routes->build());
+            return new RouteManager($routes->build(), $a['app.route.root']);
         };
         // Pour générer des routes depuis la vue (e.g: Helper::path('my_route',$args))
         $app->registerHelper('path','router','path');
+    }
+
+    public static function setupProjtectRoot(Application $app) {
+        $base = $_SERVER['REQUEST_URI'];
+        if(preg_match('#index.php#', $base)){
+            $split=preg_split("/\/index.php/",$base);
+            $base = $split[0];
+        }else if($_SERVER['REQUEST_URI'] === $_SERVER['PATH_INFO']){
+            $base = "";
+        }else {
+            if(strpos($base,$_SERVER['PATH_INFO']) !== false) {
+                $base = substr($base,0,-strlen($_SERVER['PATH_INFO']));
+            }
+        }
+        $app['app.route.root'] = $base;
     }
 
     public function before(Request $request){

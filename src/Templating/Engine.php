@@ -18,13 +18,15 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class Engine {
 
     protected $dir;
+    protected $root;
     /**
      * @var Session
      */
     protected $session;
 
-    public function __construct($dir, Session $session) {
+    public function __construct($dir, Session $session, $root) {
         $this->dir = $dir;
+        $this->root = $root;
         $this->session = $session;
     }
 
@@ -41,25 +43,14 @@ class Engine {
     }
 
     public function asset($path) {
-        $base = $_SERVER['REQUEST_URI'];
-        if(preg_match('#index.php#', $base)){
-            $split=preg_split("/index.php/",$base);
-            $base = $split[0];
-        }else if($_SERVER['REQUEST_URI'] === $_SERVER['PATH_INFO']){
-            $base = "/";
-        }else {
-            if(strpos($base,$_SERVER['PATH_INFO']) !== false) {
-                $base = substr($base,0,-strlen($_SERVER['PATH_INFO']))."/";
-            }
-        }
         $req = sprintf(
             "%s://%s%s",
             isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
             $_SERVER['HTTP_HOST'],
-            $base
+            $this->root
         );
 
-        return $req.$path;
+        return $req."/".$path;
     }
 
     public function flash($key) {

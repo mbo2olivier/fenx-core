@@ -20,10 +20,13 @@ class RouteManager
      */
     protected $routes;
 
+    protected $root;
+
     public static $methods = ["GET","POST","PUT","DELETE","OPTIONS"];
 
-    public function __construct($routes) {
+    public function __construct($routes, $root) {
         $this->routes = $routes;
+        $this->root = $root;
     }
 
     public function path($route,$params = []) {
@@ -32,7 +35,7 @@ class RouteManager
             foreach($params as $key => $val) {
                 $path = \str_replace(sprintf(":%s",$key),$val,$path);
             }
-            return $path;
+            return $this->root.$path;
         }else {
             throw new \InvalidArgumentException(sprintf('Impossible de trouver la route "%s"',$route));
         }

@@ -29,7 +29,7 @@ class Templating extends Module {
             if( !is_dir($templateDir) ){
                 mkdir($templateDir, 0700);
             }
-            return new Engine($templateDir, $a['session']);
+            return new Engine($templateDir, $a['session'], $a['app.route.root']);
         };
 
         $app->registerHelper('asset','templating','asset');
