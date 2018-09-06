@@ -23,11 +23,15 @@ class Engine {
     }
 
     public function render($template,$data = []) {
+        $text = $this>renderView($template, $data);
+        return new Response($text);
+    }
+
+    public function renderView($template, $data = []) {
         extract($data, EXTR_SKIP);
         \ob_start();
         require $this->dir."/".$template;
-        $text = \ob_get_clean();
-        return new Response($text);
+        return \ob_get_clean();
     }
 
     public function asset($path) {
