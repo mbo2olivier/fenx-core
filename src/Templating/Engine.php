@@ -9,6 +9,7 @@
 namespace Fenxweb\Fenx\Templating;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 /**
  * class Engine.
  * 
@@ -17,13 +18,18 @@ use Symfony\Component\HttpFoundation\Response;
 class Engine {
 
     protected $dir;
+    /**
+     * @var Session
+     */
+    protected $session;
 
-    public function __construct($dir) {
+    public function __construct($dir, Session $session) {
         $this->dir = $dir;
+        $this->session = $session;
     }
 
     public function render($template,$data = []) {
-        $text = $this>renderView($template, $data);
+        $text = $this->renderView($template, $data);
         return new Response($text);
     }
 
@@ -54,5 +60,9 @@ class Engine {
         );
 
         return $req.$path;
+    }
+
+    public function flash($key) {
+        return $this->session->getFlashBag()->get($key, array());
     }
 }

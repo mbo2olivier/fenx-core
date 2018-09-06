@@ -29,9 +29,10 @@ class Templating extends Module {
             if( !is_dir($templateDir) ){
                 mkdir($templateDir, 0700);
             }
-            return new Engine($templateDir);
+            return new Engine($templateDir, $a['session']);
         };
 
         $app->registerHelper('asset','templating','asset');
+        $app->registerHelper('flash','templating','flash');
     }
 }
