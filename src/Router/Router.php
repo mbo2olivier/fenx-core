@@ -45,7 +45,9 @@ class Router extends Middleware{
         }else if($_SERVER['REQUEST_URI'] === $_SERVER['PATH_INFO']){
             $base = "";
         }else {
-            if(strpos($base,$_SERVER['PATH_INFO']) !== false) {
+            if (!isset($_SERVER['PATH_INFO'])){
+                $base = substr($base,-1) === "/" ? substr($base,0,-strlen("/")): $base;
+            }else {
                 $base = substr($base,0,-strlen($_SERVER['PATH_INFO']));
             }
         }
