@@ -18,6 +18,7 @@ use Fenxweb\Fenx\Templating\Helper;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
+use Fenxweb\Fenx\Hook\Hooker;
 
 /**
  * class Application.
@@ -50,6 +51,7 @@ class Application extends Container
         $this->debug = $debug;
         $this['app.mode'] = $this->debug ? 'dev': 'prod';
         $this->setupSession();
+        $this->setupHooker();
         AnnotationRegistry::registerFile(__DIR__.'/../mapping/Annotations.php');
         $this->before = [];
         $this->after = [];
@@ -177,12 +179,18 @@ class Application extends Container
         Helper::registerHelper($name, $service, $method);
     }
 
-    public function setupSession() {
+    private function setupSession() {
         $this['session'] = function() {
             $sessionStorage = new NativeSessionStorage(array(), new NativeFileSessionHandler());
             $session = new Session($sessionStorage);
             $session->start();
             return $session;
+        };
+    }
+
+    private function setupHooker() {
+        $this['hook'] = function($a) {
+            return new Hooker($a);
         };
     }
 
