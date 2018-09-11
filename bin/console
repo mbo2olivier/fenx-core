@@ -15,4 +15,13 @@ $cli->setHelperSet($helperSet);
 
 ConsoleRunner::addCommands($cli);
 
+foreach($kernel->getCommands() as $cmd => $isService) {
+    if($isService) {
+        $cli->add($kernel[$cmd]);
+    }else{
+        $cmd = new $cmd();
+        $cli->add($cmd);
+    }
+}
+
 $cli->run();

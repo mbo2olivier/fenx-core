@@ -38,10 +38,14 @@ class Application extends Container
      * @var array
      */
     protected $after;
-     /**
+    /**
      * @var array
      */
     protected $modules;
+    /**
+     * @var array
+     */
+    protected $commands;
     /**
      * @var bool
      */
@@ -56,6 +60,7 @@ class Application extends Container
         $this->before = [];
         $this->after = [];
         $this->modules = [];
+        $this->commands = [];
         $this["app.project_dir"] = $projectDir;
         $configDir = $projectDir."/config";
         $this["app.config_dir"] = $configDir;
@@ -177,6 +182,14 @@ class Application extends Container
 
     public function registerHelper($name, $service, $method) {
         Helper::registerHelper($name, $service, $method);
+    }
+
+    public function registerCommand($cmd, $isService = false) {
+        $this->commands[$cmd] = $isService;
+    }
+
+    public function getCommands() {
+        return $this->commands;
     }
 
     private function setupSession() {
