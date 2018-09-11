@@ -9,6 +9,7 @@
 namespace Fenxweb\Fenx;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 /**
  * class Controller.
@@ -36,5 +37,9 @@ class Controller
 
         $response->headers->set('Content-Disposition', $disposition);
         return $response;
+    }
+
+    public function redirect($url,$status = 302, $headers = array()) {
+        return new RedirectResponse($url, $status, $headers);
     }
 }
