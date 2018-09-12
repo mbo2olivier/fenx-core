@@ -37,7 +37,7 @@ class Hooker {
 
     public function dispatch($tag, $args = []) {
         $h = $this->getOrCreateHook($tag);
-        $result = null;
+        $result = (!$args) ? null : $args[0];
         foreach($h as $service => $method) {
             $result = \call_user_func_array([$this->app[$service],$method], $args);
         }
