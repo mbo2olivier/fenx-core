@@ -68,7 +68,7 @@ class Hook implements \Iterator {
     }
 
     public function rewind() {
-        rewind($this->callbacks);
+        reset($this->callbacks);
         $current = current($this->callbacks);
         $this->iterations = count($current);
         $this->index = key($current);
