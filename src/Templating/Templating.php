@@ -34,5 +34,6 @@ class Templating extends Module {
 
         $app->registerHelper('asset','templating','asset');
         $app->registerHelper('flash','templating','flash');
+        $app->registerHelper('view','templating','renderView');
     }
 }
