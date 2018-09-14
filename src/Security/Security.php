@@ -48,8 +48,14 @@ class Security extends Module {
             return new AuthManager($a['session'], $a['user_provider'], $a['role_manager'], $config);
         };
 
+        # Add UserSession.
+        $app['user_session'] = function($a) use ($config){
+            return new UserSession($a['session']);
+        };
+
         # add view helpers
         $app->registerHelper('check','auth','check');
+        $app->registerHelper('user','user_session','get');
     }
 
     private static function registerCommands(Application $app) {
