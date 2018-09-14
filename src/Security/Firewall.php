@@ -34,9 +34,13 @@ class Firewall extends Middleware {
 
         foreach($access as $pattern => $role) {
             if(\preg_match("#".$pattern."#",$path)) {
-                if($auth->check($role)) {
-                    break;
-                }else{
+                if($auth->check()) {
+                    if($auth->check($role)) {
+                        break;
+                    }else{
+                        return new Response("You cannot access to this page", Response::HTTP_FORBIDDEN);
+                    }
+                }else {
                     $url = $this->app['router']->path($login);
                     return new RedirectResponse($url."?redirectTo=".$request->getRequestUri());
                 }
