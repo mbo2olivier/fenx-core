@@ -20,4 +20,6 @@ interface UserProviderInterface {
     public function createUser($user);
 
     public function newObject();
+
+    public function hashPassword($user);
 }

@@ -34,10 +34,15 @@ class EntityUserProvider implements UserProviderInterface {
     }
 
     public function createUser($user) {
-        $pwd = password_hash($user->getPlainPassword(),PASSWORD_DEFAULT);
-        $user->setPassword($pwd);
+        $user = $this->hashPassword($user);
         $this->em->persist($user);
         $this->em->flush();
+        return $user;
+    }
+
+    public function hashPassword($user) {
+        $pwd = password_hash($user->getPlainPassword(),PASSWORD_DEFAULT);
+        $user->setPassword($pwd);
         return $user;
     }
 
