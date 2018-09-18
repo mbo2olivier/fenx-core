@@ -40,6 +40,10 @@ class Router extends Middleware{
     public static function setupProjtectRoot(Application $app) {
         if(!isset($_SERVER['REQUEST_URI'])) return;
         $base = $_SERVER['REQUEST_URI'];
+        if(preg_match('#\?#',$base)) {
+            $base = preg_split('#\?#',$base);
+            $base = $base[0];
+        }
         if(preg_match('#index.php#', $base)){
             $split=preg_split("/\/index.php/",$base);
             $base = $split[0];
