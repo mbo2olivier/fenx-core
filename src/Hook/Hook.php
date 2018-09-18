@@ -38,7 +38,7 @@ class Hook implements \Iterator {
     }
 
     public function attach($callback, $priority = 0) {
-        if(!preg_match("/^(\w+)::(\w+)$/",$callback)) {
+        if(!preg_match("/^(.*)::(.*)$/",$callback)) {
             throw new \InvalidArgumentException(sprintf('"%s" is not a valid service callback',$callback));
         }
         $priority_existed = isset($this->callbacks[ $priority ]);
@@ -91,7 +91,7 @@ class Hook implements \Iterator {
             $current = current($this->callbacks);
             $this->iterations = count($current);
         }
-        $this->index = key($current);
+        $this->index = ($current)? key($current): 0;
     }
 
     public function key () {
