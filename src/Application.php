@@ -72,6 +72,7 @@ class Application extends Container
         if( !is_dir($cacheDir) ){
             mkdir($cacheDir, 0700,true);
         }
+        $this['app.route.root']="";
     }
 
    /**
@@ -117,6 +118,7 @@ class Application extends Container
 
    public function run () {
        $request = Request::createFromGlobals();
+       $this['app.route.root']= $request->getBasePath();
        $response = $this->runBefore($request);
        if(!$response instanceOf Response) {
             $response = $this->invokeController($request);

@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 class Router extends Middleware{
 
     public static function initialize(Application $app){
-        self::setupProjtectRoot($app);
+        //self::setupProjtectRoot($app);
 
         $app['router'] = function ($a) {
             $routes = new Builder();
