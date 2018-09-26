@@ -35,6 +35,7 @@ class Router extends Middleware{
         };
         // Pour générer des routes depuis la vue (e.g: Helper::path('my_route',$args))
         $app->registerHelper('path','router','path');
+        $app->registerHelper('routeInfo','router','getRouteInfo');
     }
 
     public static function setupProjtectRoot(Application $app) {

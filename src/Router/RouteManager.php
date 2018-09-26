@@ -21,12 +21,23 @@ class RouteManager
     protected $routes;
 
     protected $root;
+    /**
+     * @var string
+     */
+    protected $currentRouteName;
+
+    /**
+     * @var string
+     */
+    protected $currentRouteParams;
 
     public static $methods = ["GET","POST","PUT","DELETE","OPTIONS"];
 
     public function __construct($routes, $root) {
         $this->routes = $routes;
         $this->root = $root;
+        $this->currentRouteName = "";
+        $this->currentRouteParams = [];
     }
 
     public function path($route,$params = []) {
@@ -54,9 +65,25 @@ class RouteManager
                 foreach($route['params'] as $p) {
                     $response['params'][$p] = $data[$p];
                 }
+                $this->currentRouteName = $name;
+                $this->currentRouteParams = $route['params'];
                 break;
+            }else{
+                $this->currentRouteName = "";
+                $this->currentRouteParams = [];
             }
         }
         return $response;
+    }
+
+    public function getRouteInfo($key){
+        switch($key) {
+            case "params":
+                return $this->currentRouteParams;
+            case "name":
+                return $this->currentRouteName;
+            default:
+                return null;
+        }
     }
 }
