@@ -40,6 +40,7 @@ class Hooker {
         $result = (!$args) ? null : $args[0];
         foreach($h as $service => $method) {
             $result = \call_user_func_array([$this->app[$service],$method], $args);
+            $args[0] = $result;
         }
 
         return $result;
