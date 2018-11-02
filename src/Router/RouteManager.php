@@ -21,6 +21,8 @@ class RouteManager
     protected $routes;
 
     protected $root;
+
+    protected $host;
     /**
      * @var string
      */
@@ -33,20 +35,21 @@ class RouteManager
 
     public static $methods = ["GET","POST","PUT","DELETE","OPTIONS"];
 
-    public function __construct($routes, $root) {
+    public function __construct($routes, $root, $host) {
         $this->routes = $routes;
         $this->root = $root;
+        $this->host = $host;
         $this->currentRouteName = "";
         $this->currentRouteParams = [];
     }
 
-    public function path($route,$params = []) {
+    public function path($route,$params = [], $absolute = false) {
         if(isset($this->routes[$route])) {
             $path = $this->routes[$route]['pattern'];
             foreach($params as $key => $val) {
                 $path = \str_replace(sprintf(":%s",$key),$val,$path);
             }
-            return $this->root.$path;
+            return ($absolute ? $this->host : "").$this->root.$path;
         }else {
             throw new \InvalidArgumentException(sprintf('Impossible de trouver la route "%s"',$route));
         }

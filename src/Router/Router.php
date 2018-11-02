@@ -31,7 +31,7 @@ class Router extends Middleware{
                     require_once $f;
                 }
             }
-            return new RouteManager($routes->build(), $a['app.route.root']);
+            return new RouteManager($routes->build(), $a['app.route.root'], $a['app.route.host']);
         };
         // Pour générer des routes depuis la vue (e.g: Helper::path('my_route',$args))
         $app->registerHelper('path','router','path');
