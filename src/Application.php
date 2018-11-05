@@ -119,7 +119,7 @@ class Application extends Container
    public function run () {
        $request = Request::createFromGlobals();
        $this['app.route.root']= $request->getBasePath();
-       $this['app.route.host']= sprintf("%s://%s", $request->isSecure() ? 'https':'http', $request->getHost());
+       $this['app.route.host']= sprintf("%s://%s%s", $request->isSecure() ? 'https':'http', $request->getHost(), $request->getPort() === 80 ? "" : sprintf(":%d",$request->getPort()));
        $response = $this->runBefore($request);
        if(!$response instanceOf Response) {
             $response = $this->invokeController($request);
