@@ -50,16 +50,26 @@ class AuthManager {
         $this->loginRoute = (isset($config['login_route'])) ? $config['login_route'] : 'login';
     }
 
+    public function authUser($username) {
+        $user = $this->provider->findUser($username);
+        if($user) {
+            $this->session->set(self::SESSION_USER, [
+                'id' => $user->getId(),
+                'username' => $username,
+                'role' => $user->getRole()
+            ]);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public function login($username, $pwd) {
         $user = $this->provider->findUser($username);
         if($user) {
             if(password_verify($pwd, $user->getPassword())) {
-                $this->session->set(self::SESSION_USER, [
-                    'id' => $user->getId(),
-                    'username' => $username,
-                    'role' => $user->getRole()
-                ]);
-                return self::LOGIN_SUCCESS;
+                $ret = $this->authUser($username);
+                return $ret ? self::LOGIN_SUCCESS : self::LOGIN_USER_NOT_FOUND;
             }else {
                 return self::LOGIN_BAD_CREDENTIALS;
             }
