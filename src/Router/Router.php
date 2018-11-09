@@ -63,7 +63,7 @@ class Router extends Middleware{
     public function before(Request $request){
         $path = $request->getPathInfo();
         $router = $this->app['router'];
-        $rep = $router->checkPath($path);
+        $rep = $router->checkPath($path, $request->getMethod());
         if(is_array($rep)) {
             $request->attributes->set('_route', $rep['name']);
             $request->attributes->set(Application::CTRL_CLASS_KEY,$rep['controller']);

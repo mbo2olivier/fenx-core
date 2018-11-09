@@ -55,11 +55,11 @@ class RouteManager
         }
     }
 
-    public function checkPath($path) {
+    public function checkPath($path,$method = "GET") {
         $response = false;
         $data = [];
         foreach($this->routes as $name => $route) {
-            if(\preg_match("#^".$route['regex']."$#",$path,$data)) {
+            if(in_array($method, $route['methods']) && \preg_match("#^".$route['regex']."$#",$path,$data)) {
                 $response = [];
                 $response['name'] = $name;
                 $response['controller'] = $route['controller'];
