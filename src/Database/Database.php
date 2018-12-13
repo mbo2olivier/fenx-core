@@ -32,6 +32,8 @@ class Database extends Module {
         }
         $params = require $configFile;
         $config = Setup::createAnnotationMetadataConfiguration([$entityDir], $isDevMode, null, null, false);
+        $config->setProxyDir(isset($params['proxy_dir']) ? $params['proxy_dir'] : $app['app.cache_dir']."/doctrine");
+        $config->setProxyNamespace("App\DoctrineProxies");
         $em = EntityManager::create($params, $config);
 
         $app['db.em'] = function($a) use ($em) {
