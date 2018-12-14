@@ -68,40 +68,32 @@ class Hook implements \Iterator {
     }
 
     public function rewind() {
-        reset($this->callbacks);
-        $current = current($this->callbacks);
-        $this->iterations = ($current)? count($current) : 0;
-        $this->index = ($current)? key($current): 0;
+        $this->iterations = 0;
+        $this->index = 0;
     }
 
     public function current () {
-        $current = current($this->callbacks);
-        $i = $current[$this->index];
+        $i = $this->callbacks[$this->iterations][$this->index];
         $i = preg_split("/::/",$i);
         return $i[1];
     }
 
     public function next () {
-        $this->index++;
-        $current = current($this->callbacks);
-        if($this->index < $this->iterations) {
-            next($current);
-        }else {
-            next($this->callbacks);
-            $current = current($this->callbacks);
-            $this->iterations = count($current);
+        if((count($this->callbacks[$this->iterations]) - 1) <= $this->index) {
+            $this->index = 0;
+            $this->iterations++;
+        }else{
+            $this->index++;
         }
-        $this->index = ($current)? key($current): 0;
     }
 
     public function key () {
-        $current = current($this->callbacks);
-        $i = $current[$this->index];
+        $i = $this->callbacks[$this->iterations][$this->index];
         $i = preg_split("/::/",$i);
         return $i[0];
     }
 
     public function valid () {
-        return key( $this->callbacks ) !== null;
+        return isset($this->callbacks[$this->iterations][$this->index]);
     }
 }
